@@ -22,10 +22,6 @@ const fetchSubRouterActions = generateFetcherActionCreator({
   },
   finish: (dispatch: Redux.Dispatch, getState: GetState) => {
     let { route } = getState();
-    let { clusterId, rid } = route.queries;
-    // 获取当前集群所有开启的Addon
-
-    dispatch(clusterActions.fetchClusterAddon(clusterId, +rid));
   }
 });
 

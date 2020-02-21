@@ -6,7 +6,7 @@
 const isInSameModule = (prevpath: string, currentpath: string) => {
   let [prevBusiness, prevModule, ...prevRest] = prevpath.split('/').filter(item => item !== ''),
     [currentBusiness, currentModule, ...currentRest] = currentpath.split('/').filter(item => item !== '');
-  if (prevModule !== currentModule) {
+  if (prevModule !== currentModule && prevModule !== undefined) {
     return false;
   }
   return true;
