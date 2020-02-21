@@ -20,13 +20,7 @@ const fetchSubRouterActions = generateFetcherActionCreator({
     let response = await WebAPI.fetchSubRouterList(subRouterQuery);
     return response;
   },
-  finish: (dispatch: Redux.Dispatch, getState: GetState) => {
-    let { route } = getState();
-    let { clusterId, rid } = route.queries;
-    // 获取当前集群所有开启的Addon
-
-    dispatch(clusterActions.fetchClusterAddon(clusterId, +rid));
-  }
+  finish: (dispatch: Redux.Dispatch, getState: GetState) => {}
 });
 
 /** query subRouter list */

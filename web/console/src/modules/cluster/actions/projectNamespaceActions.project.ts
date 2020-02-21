@@ -95,12 +95,26 @@ const restActions = {
         recordCount: clusterList.length,
         records: []
       };
+      let resourceInfo = resourceConfig()['cluster'];
+      let response = await WebAPI.fetchSpecificResourceList(
+        {
+          filter: {}
+        },
+        resourceInfo,
+        false,
+        true
+      );
       result.records = clusterList.map(item => {
-        return {
-          metadata: { name: item },
-          spec: { displayName: '-' },
-          status: {}
-        };
+        let finder = response.records.find(i => i.metadata.name === item);
+        if (finder) {
+          return finder;
+        } else {
+          return {
+            metadata: { name: item },
+            spec: { displayName: '-' },
+            status: { version: '1.14.4' }
+          };
+        }
       });
       dispatch({
         type: FFReduxActionName.CLUSTER + '_FetchDone',
@@ -121,10 +135,14 @@ const restActions = {
     return async (dispatch: Redux.Dispatch, getState: GetState) => {
       let { route } = getState(),
         urlParams = router.resolve(route);
+      dispatch(
+        clusterActions.initClusterVersion(cluster.status && cluster.status.version ? cluster.status.version : '1.14.4')
+      );
       dispatch({
         type: FFReduxActionName.CLUSTER + '_Selection',
         payload: cluster
       });
+
       router.navigate(
         urlParams,
         Object.assign(route.queries, {
